@@ -169,6 +169,11 @@ def parse_filename(show, filename, file_mask):
 
     try:
         info_dictionary.update(show.episodes[(series, episode)])
+    except KeyError:
+        info_dictionary['title'] = 'Episode %d.%d' % (series, episode)
+        show.episodes[(series, episode)] = {'title': info_dictionary['title']}
+        print 'No data returned for %s; using default title of %s' % (filename, info_dictionary['title'])
+    try:
         new_filename = file_mask % info_dictionary
     except KeyError:
         print 'Episode name for "%s" not found.' % filename
